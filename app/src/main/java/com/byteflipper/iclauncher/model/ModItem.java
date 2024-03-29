@@ -1,4 +1,4 @@
-package com.byteflipper.iclauncher;
+package com.byteflipper.iclauncher.model;
 
 import com.google.gson.annotations.SerializedName;
 

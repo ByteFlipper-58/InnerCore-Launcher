@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:padding="8dp"
     android:orientation="vertical"
-    tools:context=".ui.fragment.FirstFragment">
+    tools:context=".ui.fragment.ModsListFragment">
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/categoryInputLayout"

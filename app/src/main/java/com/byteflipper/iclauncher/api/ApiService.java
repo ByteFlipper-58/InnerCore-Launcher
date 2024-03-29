@@ -1,6 +1,6 @@
 package com.byteflipper.iclauncher.api;
 
-import com.byteflipper.iclauncher.ModItem;
+import com.byteflipper.iclauncher.model.ModItem;
 
 import java.util.List;
 import retrofit2.Call;

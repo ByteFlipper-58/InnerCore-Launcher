@@ -3,7 +3,7 @@ package com.byteflipper.iclauncher.viewmodel;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.byteflipper.iclauncher.ModItem;
+import com.byteflipper.iclauncher.model.ModItem;
 import com.byteflipper.iclauncher.api.ApiClient;
 import com.byteflipper.iclauncher.api.ApiService;
 
@@ -36,14 +36,13 @@ public class ModItemViewModel extends ViewModel {
         return errorMessage;
     }
 
-    // Метод для загрузки списка модов с сервера
     public void loadModItemList(String sort, String lang, int page) {
         isLoading.setValue(true);
 
         ApiService apiService = ApiClient.getClient().create(ApiService.class);
         Call<List<ModItem>> call = apiService.getList(sort, lang, page);
 
-        call.enqueue(new Callback<List<ModItem>>() {
+        call.enqueue(new Callback<>() {
             @Override
             public void onResponse(Call<List<ModItem>> call, Response<List<ModItem>> response) {
                 isLoading.setValue(false);

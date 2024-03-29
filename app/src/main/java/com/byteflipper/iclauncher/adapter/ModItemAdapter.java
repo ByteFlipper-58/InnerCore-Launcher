@@ -1,23 +1,30 @@
 package com.byteflipper.iclauncher.adapter;
 
+import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.byteflipper.iclauncher.ModItem;
+import com.byteflipper.iclauncher.model.ModItem;
 import com.byteflipper.iclauncher.R;
 import com.google.android.material.chip.Chip;
 import com.squareup.picasso.Picasso;
 import java.util.List;
 
 public class ModItemAdapter extends RecyclerView.Adapter<ModItemAdapter.ModItemViewHolder> {
+    private final Fragment fragment;
     private List<ModItem> modItemList;
 
-    public ModItemAdapter(List<ModItem> modItemList) {
+    public ModItemAdapter(Fragment fragment, List<ModItem> modItemList) {
+        this.fragment = fragment;
         this.modItemList = modItemList;
     }
 
@@ -35,6 +42,14 @@ public class ModItemAdapter extends RecyclerView.Adapter<ModItemAdapter.ModItemV
         holder.descriptionTextView.setText(modItem.getDescription());
         holder.likesCount.setText(String.valueOf(modItem.getLikes()));
         Picasso.get().load("https://icmods.mineprogramming.org/api/img/" + modItem.getIcon()).into(holder.iconImageView);
+
+        holder.itemView.setOnClickListener(v -> {
+            Bundle finalBundle = new Bundle();
+            Log.d("ModItemAdapter", "Передача mod_id: " + modItem.getId());
+            finalBundle.putInt("mod_id", modItem.getId());
+            NavController navController = Navigation.findNavController(fragment.requireActivity(), R.id.nav_host_fragment_content_main);
+            navController.navigate(R.id.action_FirstFragment_to_SecondFragment, finalBundle);
+        });
     }
 
     @Override
