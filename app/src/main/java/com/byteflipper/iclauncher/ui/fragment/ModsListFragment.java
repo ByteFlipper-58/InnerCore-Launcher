@@ -39,17 +39,23 @@ public class ModsListFragment extends Fragment {
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        // Устанавливаем менеджер компоновки и адаптер для RecyclerView
         binding.recview.setLayoutManager(new LinearLayoutManager(requireContext()));
         adapter = new ModItemAdapter(this, new ArrayList<>());
         binding.recview.setAdapter(adapter);
 
+        // Получаем экземпляр ViewModel
         viewModel = new ViewModelProvider(this).get(ModItemViewModel.class);
+
+        // Наблюдаем за списком модов и обновляем адаптер при изменениях
         viewModel.getModItemList().observe(getViewLifecycleOwner(), modItems -> adapter.setModItemList(modItems));
 
+        // Наблюдаем за сообщениями об ошибке
         viewModel.getErrorMessage().observe(getViewLifecycleOwner(), errorMessage -> {
             Log.d("Error: ", errorMessage);
         });
 
+        // Наблюдаем за состоянием загрузки и показываем или скрываем индикатор загрузки
         viewModel.isLoading().observe(getViewLifecycleOwner(), isLoading -> {
             if (isLoading) {
                 // TODO: Показать индикатор загрузки
@@ -58,17 +64,21 @@ public class ModsListFragment extends Fragment {
             }
         });
 
+        // Устанавливаем адаптер для выпадающего списка категорий модов
         String[] categoryArray = getResources().getStringArray(R.array.category_options);
         List<String> categoryList = Arrays.asList(categoryArray);
         categoryAdapter = new ArrayAdapter<>(requireContext(), com.google.android.material.R.layout.support_simple_spinner_dropdown_item, categoryList);
         binding.categoryAutoCompleteTextView.setAdapter(categoryAdapter);
 
+        // Получаем текущий выбор категории и загружаем соответствующий список модов
         String[] sort = {"new", "updated", "popular", "redaction"};
         int sortType = SharedPreferencesUtils.getInteger(requireActivity(), "sort", 1);
         viewModel.loadModItemList(sort[sortType], "ru", 2);
 
+        // Устанавливаем текущую категорию в поле ввода
         binding.categoryAutoCompleteTextView.setText(categoryAdapter.getItem(sortType), false);
 
+        // Обработчик выбора категории из выпадающего списка
         binding.categoryAutoCompleteTextView.setOnItemClickListener((parent, view1, position, id) -> {
             String selectedCategory = categoryAdapter.getItem(position);
             viewModel.loadModItemList(sort[position], "ru", 2);

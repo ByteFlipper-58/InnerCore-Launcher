@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
@@ -17,6 +18,7 @@ import com.byteflipper.iclauncher.model.ModItem;
 import com.byteflipper.iclauncher.R;
 import com.google.android.material.chip.Chip;
 import com.squareup.picasso.Picasso;
+
 import java.util.List;
 
 public class ModItemAdapter extends RecyclerView.Adapter<ModItemAdapter.ModItemViewHolder> {
@@ -28,6 +30,7 @@ public class ModItemAdapter extends RecyclerView.Adapter<ModItemAdapter.ModItemV
         this.modItemList = modItemList;
     }
 
+    // Создание нового ViewHolder при необходимости
     @NonNull
     @Override
     public ModItemViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -35,6 +38,7 @@ public class ModItemAdapter extends RecyclerView.Adapter<ModItemAdapter.ModItemV
         return new ModItemViewHolder(itemView);
     }
 
+    // Привязка данных к ViewHolder в указанной позиции
     @Override
     public void onBindViewHolder(@NonNull ModItemViewHolder holder, int position) {
         ModItem modItem = modItemList.get(position);
@@ -43,6 +47,7 @@ public class ModItemAdapter extends RecyclerView.Adapter<ModItemAdapter.ModItemV
         holder.likesCount.setText(String.valueOf(modItem.getLikes()));
         Picasso.get().load("https://icmods.mineprogramming.org/api/img/" + modItem.getIcon()).into(holder.iconImageView);
 
+        // Обработка нажатия на элемент списка
         holder.itemView.setOnClickListener(v -> {
             Bundle finalBundle = new Bundle();
             Log.d("ModItemAdapter", "Передача mod_id: " + modItem.getId());
@@ -52,11 +57,13 @@ public class ModItemAdapter extends RecyclerView.Adapter<ModItemAdapter.ModItemV
         });
     }
 
+    // Возвращает общее количество элементов в списке
     @Override
     public int getItemCount() {
         return modItemList.size();
     }
 
+    // ViewHolder представляет элемент списка и содержит его Views
     public class ModItemViewHolder extends RecyclerView.ViewHolder {
         public TextView titleTextView;
         public TextView descriptionTextView;
@@ -72,6 +79,7 @@ public class ModItemAdapter extends RecyclerView.Adapter<ModItemAdapter.ModItemV
         }
     }
 
+    // Метод для обновления списка модов
     public void setModItemList(List<ModItem> modItemList) {
         this.modItemList = modItemList;
         notifyDataSetChanged();
