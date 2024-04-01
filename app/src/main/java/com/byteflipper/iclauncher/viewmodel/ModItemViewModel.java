@@ -4,8 +4,8 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.byteflipper.iclauncher.model.ModItem;
-import com.byteflipper.iclauncher.api.ApiClient;
-import com.byteflipper.iclauncher.api.ApiService;
+import com.byteflipper.iclauncher.api.client.ApiClient;
+import com.byteflipper.iclauncher.api.service.ApiService;
 
 import java.util.List;
 

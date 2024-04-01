@@ -16,13 +16,18 @@ import java.util.List;
  */
 public class PackSelectionDialog {
 
+    public interface PackSelectionCallback {
+        void onPackSelected(String packName);
+    }
+
     /**
      * Показывает диалоговое окно выбора пака.
      *
      * @param context        Контекст активности или фрагмента, откуда вызывается диалог.
      * @param availablePacks Список доступных паков для выбора.
+     * @param callback       Колбэк, вызываемый при выборе пака.
      */
-    public static void show(@NonNull Context context, @NonNull List<String> availablePacks) {
+    public static void show(@NonNull Context context, @NonNull List<String> availablePacks, PackSelectionCallback callback) {
         // Проверка, есть ли доступные паки
         if (availablePacks.isEmpty()) {
             // Если нет доступных паков, показываем короткое сообщение об этом и завершаем метод
@@ -38,18 +43,35 @@ public class PackSelectionDialog {
                 // Устанавливаем заголовок диалога
                 .setTitle("Выберите пак")
                 // Устанавливаем адаптер для отображения списка паков в диалоге и обработчик для выбора пака
-                .setAdapter(adapter, (dialog, which) -> {
-                    // Получаем выбранный пак по его позиции в списке
-                    String selectedPack = availablePacks.get(which);
-                    // Показываем короткое уведомление о выбранном паке
-                    Toast.makeText(context, "Выбран пак: " + selectedPack, Toast.LENGTH_SHORT).show();
+                .setAdapter(adapter, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // Получаем выбранный пак по его позиции в списке
+                        String selectedPack = availablePacks.get(which);
+                        // Показываем короткое уведомление о выбранном паке
+                        Toast.makeText(context, "Выбран пак: " + selectedPack, Toast.LENGTH_SHORT).show();
+                        // Вызываем колбэк, передавая выбранный пак
+                        if (callback != null) {
+                            callback.onPackSelected(selectedPack);
+                        }
+                    }
                 })
                 // Устанавливаем кнопку "Отмена"
                 .setNegativeButton("Отмена", null)
                 // Устанавливаем кнопку "Скачать" с обработчиком клика
-                .setPositiveButton("Скачать", (dialog, which) -> Toast.makeText(context, "Скачивание...", Toast.LENGTH_SHORT).show())
+                .setPositiveButton("Скачать", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Toast.makeText(context, "Скачивание...", Toast.LENGTH_SHORT).show();
+                    }
+                })
                 // Устанавливаем кнопку "Запомнить выбор" с обработчиком клика
-                .setNeutralButton("Запомнить выбор", (dialog, which) -> Toast.makeText(context, "Выбор запомнен", Toast.LENGTH_SHORT).show())
+                .setNeutralButton("Запомнить выбор", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Toast.makeText(context, "Выбор запомнен", Toast.LENGTH_SHORT).show();
+                    }
+                })
                 // Показываем диалоговое окно
                 .show();
     }

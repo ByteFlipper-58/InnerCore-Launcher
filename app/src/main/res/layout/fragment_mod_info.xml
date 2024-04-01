@@ -94,25 +94,38 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/chipGroup"
-                android:orientation="horizontal">
+                android:orientation="vertical">
 
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/cancelOrDeleteButton"
-                    android:layout_width="0dp"
+                <com.google.android.material.progressindicator.LinearProgressIndicator
+                    android:id="@+id/progressIndicator"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:layout_marginEnd="0dp"
-                    android:text="Отмена"
-                    style="@style/Widget.Material3.Button.OutlinedButton"/>
+                    android:layout_marginVertical="8dp"
+                    android:visibility="gone"/>
 
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/actionButton"
-                    android:layout_width="0dp"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:layout_marginStart="0dp"
-                    android:text="Скачать"
-                    style="@style/ThemeOverlay.Material3.Button.ElevatedButton"/>
+                    android:orientation="horizontal">
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/cancelOrDeleteButton"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginEnd="0dp"
+                        android:text="Отмена"
+                        style="@style/Widget.Material3.Button.OutlinedButton"/>
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/actionButton"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginStart="0dp"
+                        android:text="Скачать"
+                        style="@style/ThemeOverlay.Material3.Button.ElevatedButton"/>
+                </LinearLayout>
             </LinearLayout>
         </RelativeLayout>
     </com.google.android.material.card.MaterialCardView>

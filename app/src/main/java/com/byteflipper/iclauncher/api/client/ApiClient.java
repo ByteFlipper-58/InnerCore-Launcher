@@ -1,4 +1,4 @@
-package com.byteflipper.iclauncher.api;
+package com.byteflipper.iclauncher.api.client;
 
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;

@@ -1,4 +1,4 @@
-package com.byteflipper.iclauncher.api;
+package com.byteflipper.iclauncher.api.service;
 
 import com.byteflipper.iclauncher.model.ModItem;
 
