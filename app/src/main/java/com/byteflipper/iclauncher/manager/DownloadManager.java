@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 
 import com.byteflipper.iclauncher.api.client.ApiClient;
 import com.byteflipper.iclauncher.api.service.DownloadService;
+import com.byteflipper.iclauncher.utils.ZipUtils;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -72,7 +73,7 @@ public class DownloadManager {
 
     private static void saveFileToStorage(Context context, ResponseBody body, String packName, String modName, DownloadCallback callback) {
         try {
-            File directory = new File(Environment.getExternalStorageDirectory(), "games/horizon/packs/" + packName + "/innercore/mods");
+            File directory = new File("/storage/emulated/0/", "games/horizon/packs/" + packName + "/innercore/mods");
             if (!directory.exists()) {
                 directory.mkdirs();
             }
@@ -105,6 +106,14 @@ public class DownloadManager {
                 }
 
                 outputStream.flush();
+
+                // Распаковываем файл, если его расширение .zip или .icmod
+                if (fileName.endsWith(".zip") || fileName.endsWith(".icmod")) {
+                    // Извлечение файла
+                    ZipUtils.unzip(file.getAbsolutePath(), directory.getAbsolutePath());
+                    // Удаляем оригинальный zip-файл
+                    file.delete();
+                }
 
                 if (callback != null) {
                     callback.onSuccess(file);
