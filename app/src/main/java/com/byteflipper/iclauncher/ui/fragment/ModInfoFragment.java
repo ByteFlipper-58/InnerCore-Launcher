@@ -66,27 +66,6 @@ public class ModInfoFragment extends Fragment {
 
         binding.cancelOrDeleteButton.setVisibility(View.GONE);
 
-        binding.actionButton.setOnClickListener(v -> {
-            PackManager packManager = new PackManager(requireActivity());
-            ArrayList<String> availablePacks = (ArrayList<String>) packManager.checkForPacks();
-            if (!availablePacks.isEmpty()) {
-                PackSelectionDialog.show(requireActivity(), availablePacks, new PackSelectionDialog.PackSelectionCallback() {
-                    @Override
-                    public void onPackSelected(String packName) {
-                        selectedPackName = packName;
-                        packManager.saveSelectedPack(packName); // Сохраняем выбранный пак
-                    }
-                });
-            } else {
-                // Handle case where no packs are available
-                Log.e("ModInfoFragment", "No packs available");
-            }
-
-            if (!isExpanded) {
-                expandButtons();
-            }
-        });
-
         binding.cancelOrDeleteButton.setOnClickListener(v -> {
             if (isExpanded) {
                 collapseButtons();
@@ -94,36 +73,31 @@ public class ModInfoFragment extends Fragment {
         });
 
         binding.actionButton.setOnClickListener(v -> {
-            if (selectedPackName != null) {
-                int modId = finalBundle.getInt("mod_id");
-                String packDirectoryPath = new PackManager(requireActivity()).getSavedPack(); // Получаем полный путь к месту для скачивания файла
-                DownloadManager.downloadModFile(requireContext(), modId, packDirectoryPath, mod_name, new DownloadManager.DownloadCallback() {
-                    @Override
-                    public void onStart() {
-                        binding.progressIndicator.setVisibility(View.VISIBLE);
-                    }
+            int modId = finalBundle.getInt("mod_id");
+            String packDirectoryPath = new PackManager(requireActivity()).getSavedPack();
+            DownloadManager.downloadModFile(requireContext(), modId, packDirectoryPath, mod_name, new DownloadManager.DownloadCallback() {
+                @Override
+                public void onStart() {
+                    binding.progressIndicator.setVisibility(View.VISIBLE);
+                }
 
-                    @Override
-                    public void onProgress(int progress) {
-                        binding.progressIndicator.setProgressCompat(progress, true);
-                    }
+                @Override
+                public void onProgress(int progress) {
+                    binding.progressIndicator.setProgressCompat(progress, true);
+                }
 
-                    @Override
-                    public void onSuccess(File file) {
-                        binding.progressIndicator.setVisibility(View.GONE);
-                        // Handle download success
-                    }
+                @Override
+                public void onSuccess(File file) {
+                    binding.progressIndicator.setVisibility(View.GONE);
+                    Log.d("DOWNLOADER: ", "Done");
+                }
 
-                    @Override
-                    public void onError(String message) {
-                        binding.progressIndicator.setVisibility(View.GONE);
-                        // Handle download error
-                    }
-                });
-            } else {
-                // Handle case where no pack is selected
-                Log.e("ModInfoFragment", "No pack selected");
-            }
+                @Override
+                public void onError(String message) {
+                    binding.progressIndicator.setVisibility(View.GONE);
+                    Log.d("DOWNLOADER: ", message);
+                }
+            });
         });
     }
 

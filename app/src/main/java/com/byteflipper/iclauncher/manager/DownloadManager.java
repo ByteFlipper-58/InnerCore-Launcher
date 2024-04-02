@@ -1,6 +1,7 @@
 package com.byteflipper.iclauncher.manager;
 
 import android.content.Context;
+import android.os.Environment;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -20,8 +21,6 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class DownloadManager {
-
-    private static final int REQUEST_CODE_WRITE_STORAGE = 100;
 
     public interface DownloadCallback {
         void onStart();
@@ -73,7 +72,7 @@ public class DownloadManager {
 
     private static void saveFileToStorage(Context context, ResponseBody body, String packName, String modName, DownloadCallback callback) {
         try {
-            File directory = new File(context.getExternalFilesDir(null), "games/horizon/packs/" + packName + "/innercore/mods");
+            File directory = new File(Environment.getExternalStorageDirectory(), "games/horizon/packs/" + packName + "/innercore/mods");
             if (!directory.exists()) {
                 directory.mkdirs();
             }

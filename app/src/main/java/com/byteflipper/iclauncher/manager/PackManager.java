@@ -14,7 +14,7 @@ public class PackManager {
     private static final String SELECTED_PACK_KEY = "selected_pack";
 
     public PackManager(Context context) {
-        // Путь к внутреннему хранилищу (/storage/emulated/0/games/horizon/packs)
+        // Путь к внешнему хранилищу (/storage/emulated/0/games/horizon/packs)
         this.packsDir = new File(Environment.getExternalStorageDirectory(), "games/horizon/packs");
         // Инициализация SharedPreferences для сохранения выбранного пака
         this.sharedPreferences = context.getSharedPreferences("PackPrefs", Context.MODE_PRIVATE);
